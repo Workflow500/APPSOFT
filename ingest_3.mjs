@@ -1,15 +1,4 @@
-// ==================================================================
-// Airsoft DE  ·  Ingestion Worker
-// Holt regelmaessig die Event-/Ticketshop-Seiten der Stammfelder,
-// laesst Claude daraus strukturierte Events extrahieren und schreibt
-// events.json  -  genau die Datei, die die App liest.
-//
-// Lauf:        node ingest.mjs        (Node 18+)
-// Benoetigt:   Umgebungsvariable ANTHROPIC_API_KEY
-// Doku API:    https://docs.claude.com/en/api/overview
-// ==================================================================
-
-import { writeFile, readFile } from "node:fs/promises";
+mport { writeFile, readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 
 const API_KEY = process.env.ANTHROPIC_API_KEY;
