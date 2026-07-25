@@ -1,5 +1,3 @@
-name: Airsoft Events aktualisieren
-
 on:
   schedule:
     # Einmal taeglich um 04:00 UTC (06:00 deutscher Sommerzeit).
