@@ -1,0 +1,40 @@
+name: Airsoft Events aktualisieren
+
+on:
+  schedule:
+    # Einmal taeglich um 04:00 UTC (06:00 deutscher Sommerzeit).
+    # GitHub rechnet Cron immer in UTC.
+    - cron: "0 4 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo auschecken
+        uses: actions/checkout@v4
+
+      - name: Node einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Events einlesen
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node ingest.mjs
+
+      - name: Ergebnis committen
+        run: |
+          git config user.name "airsoft-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A events.json .ingest-cache.json
+          if git diff --cached --quiet; then
+            echo "Keine Aenderung, nichts zu committen"
+          else
+            git commit -m "Events aktualisiert"
+            git push
+          fi
